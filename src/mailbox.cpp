@@ -76,7 +76,6 @@ int zmq::mailbox_t::recv (command_t *cmd_, int timeout_)
     //  Get a command.
     errno_assert (rc == 0);
     bool ok = cpipe.read (cmd_);
-    zmq_assert (ok);
-    return 0;
+    return ok ? 0 : -1;
 }
 

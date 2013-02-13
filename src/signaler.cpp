@@ -152,7 +152,10 @@ int zmq::signaler_t::wait (int timeout_)
         return -1;
     }
     zmq_assert (rc == 1);
-    zmq_assert (pfd.revents & POLLIN);
+    if (unlikely ((pfd.revents & POLLIN) == 0)) {
+        errno = EINTR;
+        return -1;
+    }
     return 0;
 
 #elif defined ZMQ_SIGNALER_WAIT_BASED_ON_SELECT
